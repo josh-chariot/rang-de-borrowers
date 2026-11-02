@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import {
   DEFAULT_LEVEL,
+  canvasDpr,
   INTRO_COLS,
   MOBILE_BREAKPOINT,
   bezier,
@@ -156,7 +157,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       const now = performance.now() - start;
       const W = window.innerWidth;
       const H = window.innerHeight;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = canvasDpr();
       if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
         canvas.width = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
@@ -275,7 +276,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       if (cancelled || start) return;
       // Build the wall and the first zoom step before the clock starts, so no frame stalls.
       const W = window.innerWidth;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = canvasDpr();
       const landing = levelsFor(W)[DEFAULT_LEVEL];
       const zEnd = (landing.kind === "grid" ? tileSize(W, landing.cols, t) : t.listPhoto) / edgeTile(W, cols, t);
       wallFor(W, window.innerHeight, dpr);

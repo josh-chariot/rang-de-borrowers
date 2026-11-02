@@ -47,10 +47,11 @@ export function PillTicker({
 
   // Moves the strip each frame: a steady right-to-left drift unless hovered, focused or held.
   // The offset wraps at one copy's width (the second copy hides the seam), in both directions.
+  // The loop only runs while the strip is on screen.
   useEffect(() => {
     const track = trackRef.current!;
     let raf = 0;
-    let last = performance.now();
+    let last = 0;
     const frame = (now: number) => {
       const s = st.current;
       if (!s.hovered && !s.focused && !s.drag) s.offset -= (SPEED * Math.min(now - last, 50)) / 1000;
@@ -60,8 +61,21 @@ export function PillTicker({
       track.style.transform = `translateX(${s.offset}px)`;
       raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
+    const start = () => {
+      if (raf) return;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    };
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
+    io.observe(track.parentElement!);
+    return () => {
+      io.disconnect();
+      stop();
+    };
   }, [items]);
 
   function onPointerDown(e: PointerEvent<HTMLDivElement>) {

@@ -21,6 +21,14 @@ export const MOBILE_BREAKPOINT = 768;
 /** The intro starts denser than the directory's most zoomed-out level. */
 export const INTRO_COLS = { desktop: 160, mobile: 48 };
 
+/**
+ * Canvas resolution: the screen's pixel density, capped at 2. 3x phone screens otherwise cost 2.25x the
+ * drawing work for no visible gain at these face sizes.
+ */
+export function canvasDpr() {
+  return Math.min(window.devicePixelRatio || 1, 2);
+}
+
 export function levelsFor(width: number) {
   return width < MOBILE_BREAKPOINT ? MOBILE_LEVELS : DESKTOP_LEVELS;
 }

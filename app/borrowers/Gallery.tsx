@@ -7,6 +7,7 @@ import type { Borrower, Section } from "./data";
 import { OUTCOME_LABEL, formatRupees } from "./data";
 import {
   Layout,
+  canvasDpr,
   drawFaces,
   drawLabel,
   easeInOut,
@@ -486,7 +487,7 @@ export function Gallery({ sections, levels, zoom, onZoomChange, onOpen, height, 
     s.off = [document.createElement("canvas"), document.createElement("canvas")];
     const el = scrollRef.current!;
     const resize = () => {
-      s.dpr = window.devicePixelRatio || 1;
+      s.dpr = canvasDpr();
       s.width = el.clientWidth;
       for (const c of [facesRef.current!, labelsRef.current!, ...s.off]) {
         c.width = Math.round(el.clientWidth * s.dpr);

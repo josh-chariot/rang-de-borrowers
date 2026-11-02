@@ -69,10 +69,10 @@ export function Header({
       <header id="site-header" className={cn("sticky top-6 z-40 pt-4", className)}>
         <div className="relative isolate mx-auto flex w-full max-w-page items-center justify-between px-4">
           {/* White card behind the nav, wider than the content so nothing moves when it sticks. */}
-          <div data-nav-card className="absolute -inset-x-2 -inset-y-4 -z-10 rounded-4 bg-white-100 md:-inset-x-6" />
+          <div data-nav-card className="absolute inset-x-2 -inset-y-4 -z-10 rounded-4 bg-white-100 md:-inset-x-6" />
           <div
             className={cn(
-              "absolute -inset-x-2 -inset-y-4 -z-10 rounded-4 shadow-6 transition-opacity duration-300 md:-inset-x-6",
+              "absolute inset-x-2 -inset-y-4 -z-10 rounded-4 shadow-6 transition-opacity duration-300 md:-inset-x-6",
               scrolled ? "opacity-100" : "opacity-0",
             )}
           />

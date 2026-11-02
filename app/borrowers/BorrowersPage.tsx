@@ -62,8 +62,8 @@ function mosaicFaces(card: number) {
   return Array.from({ length: 6 }, (_, n) => (card * 41 + n * 37 + ((n * n) % 11)) % FACE_COUNT);
 }
 
-/** A touch shorter than this is a tap (the eye blinks); longer is a press-and-hold (the eye stays filled). */
-const HOLD_MS = 250;
+/** On touch screens a card's icon plays when it's the card nearest the middle of the screen, with at least this share of it visible. */
+const MIN_VISIBLE_SHARE = 0.5;
 
 function endDate(b: Borrower) {
   const m = b.month + b.tenure;
@@ -93,6 +93,8 @@ export function BorrowersPage() {
   /** The directory tabs appear once the hero cards have morphed into them (on card click or scrolling down). */
   const [tabsShown, setTabsShown] = useState(false);
   const morphState = useRef<"idle" | "running" | "done">("idle");
+  /** Touch screens: index of the hero card that fills most of the screen, or -1. */
+  const [cardInView, setCardInView] = useState(-1);
 
   const q = useDeferredValue(query.trim().toLowerCase());
   const filtered = useMemo(
@@ -329,6 +331,31 @@ export function BorrowersPage() {
     window.setTimeout(end, MORPH_MS + 600);
   }, []);
 
+  // Touch screens have no hover, so the icon plays on the card in the middle of the screen instead.
+  useEffect(() => {
+    if (phase !== "settled" || !window.matchMedia("(hover: none)").matches) return;
+    // Three rectangles per scroll is cheap, so this runs directly on the scroll event.
+    const pick = () => {
+      const h = window.innerHeight;
+      let best = -1;
+      let bestDist = Infinity;
+      document.querySelectorAll<HTMLElement>("[data-explore-card]").forEach((card, i) => {
+        const r = card.getBoundingClientRect();
+        const seen = Math.max(0, Math.min(r.bottom, h) - Math.max(r.top, 0));
+        const dist = Math.abs(r.top + r.height / 2 - h / 2);
+        if (seen >= r.height * MIN_VISIBLE_SHARE && dist < bestDist) [best, bestDist] = [i, dist];
+      });
+      setCardInView(best);
+    };
+    pick();
+    window.addEventListener("scroll", pick, { passive: true });
+    window.addEventListener("resize", pick);
+    return () => {
+      window.removeEventListener("scroll", pick);
+      window.removeEventListener("resize", pick);
+    };
+  }, [phase]);
+
   // Scrolling into the gallery (the search bar has come up) morphs the cards into the tabs too.
   useEffect(() => {
     if (dockVisible && phase === "settled") morphCardsIntoTabs();
@@ -409,6 +436,7 @@ export function BorrowersPage() {
                       text={way.text}
                       pills={way.pills}
                       shown={settled}
+                      inView={cardInView === i}
                       onOpen={() => explore(way.by)}
                       onPill={(key) => jumpTo(way.by, key)}
                     />
@@ -432,7 +460,14 @@ export function BorrowersPage() {
                   ref={tabsRef}
                   className={cn("w-full transition-opacity duration-200 md:w-fit", tabsShown ? "opacity-100" : "pointer-events-none opacity-0")}
                 >
-                  <Tabs level={2} size="lg" items={GROUPS} value={groupBy} onChange={(id) => setGroupBy(id as GroupBy)} />
+                  <Tabs
+                    level={2}
+                    size="lg"
+                    items={GROUPS}
+                    value={groupBy}
+                    onChange={(id) => setGroupBy(id as GroupBy)}
+                    className="max-md:grid max-md:grid-cols-2"
+                  />
                 </div>
               </div>
             </div>
@@ -559,18 +594,19 @@ type ExploreCardProps = {
   pills: TickerPill[];
   /** Hidden (and below its spot) until the hero settles, then rises in. */
   shown: boolean;
+  /** Touch screens: this is the card filling most of the screen, so its icon plays. */
+  inView: boolean;
   onOpen: () => void;
   onPill: (key: string) => void;
 };
 
 /**
  * Hero card: face mosaic, title + animated icon, body copy, a ticker of pills.
- * Mouse: hovering fills the eye, leaving opens it again. Touch: press-and-hold fills it, a tap blinks.
+ * Mouse: hovering fills the icon, leaving plays it back. Touch: the icon fills on the card in the
+ * middle of the screen as you scroll (`inView`), nothing on press.
  */
-function ExploreCard({ index, title, icon, text, pills, shown, onOpen, onPill }: ExploreCardProps) {
+function ExploreCard({ index, title, icon, text, pills, shown, inView, onOpen, onPill }: ExploreCardProps) {
   const [active, setActive] = useState(false);
-  const [blink, setBlink] = useState<number | undefined>(undefined);
-  const touchStart = useRef(0);
   // Slow, staggered rise on entry; quick transitions for hover after that.
   const [entered, setEntered] = useState(false);
   useEffect(() => {
@@ -592,17 +628,6 @@ function ExploreCard({ index, title, icon, text, pills, shown, onOpen, onPill }:
       }}
       onPointerEnter={(e) => e.pointerType === "mouse" && setActive(true)}
       onPointerLeave={(e) => e.pointerType === "mouse" && setActive(false)}
-      onPointerDown={(e) => {
-        if (e.pointerType === "mouse") return;
-        touchStart.current = performance.now();
-        setActive(true);
-      }}
-      onPointerUp={(e) => {
-        if (e.pointerType === "mouse") return;
-        setActive(false);
-        if (performance.now() - touchStart.current < HOLD_MS) setBlink((n) => (n ?? 0) + 1);
-      }}
-      onPointerCancel={(e) => e.pointerType !== "mouse" && setActive(false)}
       onFocus={(e) => e.target === e.currentTarget && setActive(true)}
       onBlur={() => setActive(false)}
       className={cn(
@@ -623,7 +648,7 @@ function ExploreCard({ index, title, icon, text, pills, shown, onOpen, onPill }:
             <span className="text-text-grey-64">View by </span>
             {title}
           </span>
-          <MotionIcon name={icon} size={32} active={active} playKey={blink} className="opacity-80" />
+          <MotionIcon name={icon} size={32} active={active || inView} className="opacity-80" />
         </h3>
         <p className="mt-2 text-p3 font-medium text-text-grey-80">{text}</p>
         {/* Same width as the copy above; the fades sit at the strip's own edges. */}
