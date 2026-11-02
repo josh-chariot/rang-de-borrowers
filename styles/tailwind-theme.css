@@ -1,0 +1,203 @@
+/*
+ * Tailwind v4 mapping for styles/tokens.css.
+ * Import after tokens.css:  @import "./tokens.css"; @import "tailwindcss"; @import "./tailwind-theme.css";
+ * `inline` makes utilities emit var(--token) directly, so tokens.css stays the single source.
+ * Tailwind defaults for colors, spacing, type sizes, radius and shadows are cleared
+ * so only Rang De tokens exist as utilities (no off-token values).
+ */
+
+@theme inline {
+  --color-*: initial;
+  --spacing-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --font-weight-*: initial;
+
+  /* Colour: bg-primary-100, text-text-grey-64, border-text-grey-16, ... */
+  --color-bg-grey: var(--color-bg-grey);
+  --color-misc-white-to-dark: var(--color-misc-white-to-dark);
+  --color-neutral-6: var(--color-neutral-6);
+  --color-neutral-alpha-2: var(--color-neutral-alpha-2);
+  --color-neutral-alpha-3: var(--color-neutral-alpha-3);
+  --color-neutral-alpha-7: var(--color-neutral-alpha-7);
+  --color-black-alpha-3: var(--color-black-alpha-3);
+  --color-black-alpha-8: var(--color-black-alpha-8);
+  --color-black-alpha-16: var(--color-black-alpha-16);
+  --color-priority-purple: var(--color-priority-purple);
+  --color-progress-lime: var(--color-progress-lime);
+
+  --color-white-100: var(--color-white-100);
+  --color-white-80: var(--color-white-80);
+  --color-white-64: var(--color-white-64);
+  --color-white-48: var(--color-white-48);
+  --color-white-40: var(--color-white-40);
+  --color-white-32: var(--color-white-32);
+  --color-white-24: var(--color-white-24);
+  --color-white-16: var(--color-white-16);
+  --color-white-8: var(--color-white-8);
+
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-80: var(--color-primary-80);
+  --color-primary-64: var(--color-primary-64);
+  --color-primary-48: var(--color-primary-48);
+  --color-primary-40: var(--color-primary-40);
+  --color-primary-32: var(--color-primary-32);
+  --color-primary-24: var(--color-primary-24);
+  --color-primary-16: var(--color-primary-16);
+  --color-primary-8: var(--color-primary-8);
+
+  --color-green-100: var(--color-green-100);
+  --color-green-80: var(--color-green-80);
+  --color-green-64: var(--color-green-64);
+  --color-green-48: var(--color-green-48);
+  --color-green-40: var(--color-green-40);
+  --color-green-32: var(--color-green-32);
+  --color-green-24: var(--color-green-24);
+  --color-green-16: var(--color-green-16);
+  --color-green-8: var(--color-green-8);
+
+  --color-text-grey-100: var(--color-text-grey-100);
+  --color-text-grey-80: var(--color-text-grey-80);
+  --color-text-grey-64: var(--color-text-grey-64);
+  --color-text-grey-48: var(--color-text-grey-48);
+  --color-text-grey-40: var(--color-text-grey-40);
+  --color-text-grey-32: var(--color-text-grey-32);
+  --color-text-grey-24: var(--color-text-grey-24);
+  --color-text-grey-16: var(--color-text-grey-16);
+  --color-text-grey-8: var(--color-text-grey-8);
+  --color-text-grey-4: var(--color-text-grey-4);
+
+  --color-red-100: var(--color-red-100);
+  --color-red-80: var(--color-red-80);
+  --color-red-64: var(--color-red-64);
+  --color-red-40: var(--color-red-40);
+  --color-red-32: var(--color-red-32);
+  --color-red-16: var(--color-red-16);
+
+  --color-dashboard-overview-investment-bg: var(--color-dashboard-overview-investment-bg);
+  --color-dashboard-repayment-bg: var(--color-dashboard-repayment-bg);
+  --color-dashboard-nudge-band-maroon: var(--color-dashboard-nudge-band-maroon);
+  --color-dashboard-nudge-band-amber: var(--color-dashboard-nudge-band-amber);
+  --color-dashboard-repayment-breakup-1: var(--color-dashboard-repayment-breakup-1);
+  --color-dashboard-repayment-breakup-2: var(--color-dashboard-repayment-breakup-2);
+  --color-dashboard-repayment-breakup-3: var(--color-dashboard-repayment-breakup-3);
+  --color-dashboard-repayment-breakup-4: var(--color-dashboard-repayment-breakup-4);
+  --color-dashboard-community-yellow: var(--color-dashboard-community-yellow);
+  --color-dashboard-community-navy: var(--color-dashboard-community-navy);
+
+  /* Spacing: p-4 = 16px, gap-2 = 8px, p-r4 = 24px responsive. Step numbers, not px multiples. */
+  --spacing-0: var(--space-0);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-7: var(--space-7);
+  --spacing-8: var(--space-8);
+  --spacing-9: var(--space-9);
+  --spacing-18: var(--space-18);
+  --spacing-f1: var(--space-fixed-1);
+  --spacing-x6: var(--space-x6);
+  --spacing-x24: var(--space-x24);
+  --spacing-x14: var(--space-x14);
+  --spacing-x20: var(--space-x20);
+  --spacing-x36: var(--space-x36);
+  --spacing-r0: var(--space-responsive-0);
+  --spacing-r1: var(--space-responsive-1);
+  --spacing-r2: var(--space-responsive-2);
+  --spacing-r3: var(--space-responsive-3);
+  --spacing-r4: var(--space-responsive-4);
+  --spacing-r5: var(--space-responsive-5);
+  --spacing-r6: var(--space-responsive-6);
+  --spacing-r7: var(--space-responsive-7);
+  --spacing-r8: var(--space-responsive-8);
+  --spacing-r9: var(--space-responsive-9);
+
+  /* Radius and shadow: rounded-2, rounded-4, shadow-6, shadow-tooltip, shadow-popup */
+  --radius-2: var(--radius-2);
+  --radius-4: var(--radius-4);
+  --shadow-6: var(--shadow-6);
+  --shadow-tooltip: var(--shadow-tooltip);
+  --shadow-popup: var(--shadow-popup);
+  --shadow-band: var(--shadow-band);
+
+  /* Layout: max-w-page, max-w-footer */
+  --container-page: var(--container-page);
+  --container-footer: var(--container-footer);
+  --container-list: var(--container-list);
+  --container-hero: var(--container-hero);
+  --container-faq: var(--container-faq);
+
+  /* Typography: text-h1..text-h6, text-p1..text-p4 (size, line height, letter spacing together) */
+  --font-sans: var(--font-family-base);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-bold: var(--font-weight-bold);
+  --font-weight-black: var(--font-weight-black);
+
+  --text-h1: var(--font-size-h1);
+  --text-h1--line-height: var(--line-height-h1);
+  --text-h1--letter-spacing: var(--letter-spacing-h1);
+  --text-h2: var(--font-size-h2);
+  --text-h2--line-height: var(--line-height-h2);
+  --text-h2--letter-spacing: var(--letter-spacing-h2);
+  --text-h3: var(--font-size-h3);
+  --text-h3--line-height: var(--line-height-h3);
+  --text-h3--letter-spacing: var(--letter-spacing-h3);
+  --text-h4: var(--font-size-h4);
+  --text-h4--line-height: var(--line-height-h4);
+  --text-h4--letter-spacing: var(--letter-spacing-h4);
+  --text-h5: var(--font-size-h5);
+  --text-h5--line-height: var(--line-height-h5);
+  --text-h5--letter-spacing: var(--letter-spacing-h5);
+  --text-h6: var(--font-size-h6);
+  --text-h6--line-height: var(--line-height-h6);
+  --text-h6--letter-spacing: var(--letter-spacing-h6);
+  --text-p1: var(--font-size-p1);
+  --text-p1--line-height: var(--line-height-p1);
+  --text-p1--letter-spacing: var(--letter-spacing-p1);
+  --text-p2: var(--font-size-p2);
+  --text-p2--line-height: var(--line-height-p2);
+  --text-p2--letter-spacing: var(--letter-spacing-p2);
+  --text-p3: var(--font-size-p3);
+  --text-p3--line-height: var(--line-height-p3);
+  --text-p3--letter-spacing: var(--letter-spacing-p3);
+  --text-p4: var(--font-size-p4);
+  --text-p4--line-height: var(--line-height-p4);
+  --text-p4--letter-spacing: var(--letter-spacing-p4);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-family-base);
+    font-feature-settings: "lnum" 1, "pnum" 1;
+    color: var(--color-text-grey-100);
+  }
+}
+
+/*
+ * True zero offsets. The spacing scale's "0" is Figma step 0 (2px), so `inset-0`, `top-0`, `left-0`
+ * etc. resolve to 2px. Use these when an element must sit flush against its container.
+ */
+@utility inset-zero {
+  inset: 0;
+}
+@utility inset-x-zero {
+  left: 0;
+  right: 0;
+}
+@utility inset-y-zero {
+  top: 0;
+  bottom: 0;
+}
+@utility top-zero {
+  top: 0;
+}
+@utility right-zero {
+  right: 0;
+}
+@utility bottom-zero {
+  bottom: 0;
+}
+@utility left-zero {
+  left: 0;
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rang De</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/tokens.css" />
+    <style>
+      /* Colour, type, spacing, radius and shadow come only from styles/tokens.css.
+         Structural values (container max width, aspect ratio, tilt angle) are not tokens. */
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--color-white-100);
+        color: var(--color-text-grey-100);
+        font-family: var(--font-family-base);
+        font-feature-settings: "lnum" 1, "pnum" 1;
+        overflow-x: clip;
+      }
+      button { font: inherit; cursor: pointer; }
+      a { color: inherit; }
+      .container { width: min(100% - 2 * var(--space-4), 1240px); margin-inline: auto; }
+
+      /* ---------- Header (Figma: Common Assets > Header > D / Top Nav, General - Logged Out) ---------- */
+      /* Sticky nav: sticks at the banner's height (8 + 16 + 8 = space-6) and gains a shadow once scrolled. */
+      .site-header { position: sticky; top: var(--space-6); z-index: 5; padding-top: var(--space-4); }
+      .banner {
+        display: flex; align-items: center; justify-content: center; gap: var(--space-fixed-1);
+        width: 100%; border: 0; padding: var(--space-2) var(--space-3);
+        background: var(--color-primary-16); color: var(--color-primary-100);
+        font-size: var(--font-size-h6); line-height: var(--line-height-h5);
+        font-weight: var(--font-weight-black); letter-spacing: var(--letter-spacing-h6);
+        text-transform: uppercase;
+      }
+      .banner img { display: block; }
+      .nav { display: flex; align-items: center; justify-content: space-between; position: relative; isolation: isolate; }
+      /* White card behind the nav, extending past the content so the content doesn't move when it sticks. */
+      .nav::before, .nav::after {
+        content: ""; position: absolute; z-index: -1;
+        inset: calc(var(--space-4) * -1) calc(var(--space-6) * -1);
+        border-radius: var(--radius-4);
+      }
+      .nav::before { background: var(--color-white-100); }
+      .nav::after { box-shadow: var(--shadow-6); opacity: 0; transition: opacity .3s ease; }
+      .site-header.scrolled .nav::after { opacity: 1; }
+      .logo { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; }
+      .logo-mark { display: grid; place-items: center; width: calc(var(--space-9) - var(--space-fixed-1)); height: var(--space-8); }
+      .logo small {
+        font-size: calc(var(--font-size-h6) * 0.6); line-height: var(--space-2);
+        font-weight: var(--font-weight-medium); color: var(--color-text-grey-48);
+        letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+      }
+      .nav-actions { display: flex; align-items: center; gap: var(--space-2); }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: var(--space-2) var(--space-4); border: 0; border-radius: var(--radius-2);
+        font-size: var(--font-size-p3); line-height: var(--line-height-p3); font-weight: var(--font-weight-bold);
+        transition: opacity .15s, background-color .15s; white-space: nowrap;
+      }
+      .btn-primary { background: var(--color-primary-100); color: var(--color-white-100); }
+      .btn-primary:hover { opacity: .88; }
+      .btn-secondary { background: var(--color-primary-16); color: var(--color-primary-100); }
+      .btn-secondary:hover { background: var(--color-primary-24); }
+      .btn-menu {
+        align-self: stretch; padding: 0 var(--space-3); background: transparent;
+        border: var(--space-0) solid var(--color-text-grey-16); border-radius: var(--radius-2);
+      }
+      .btn-menu:hover { background: var(--color-text-grey-4); }
+      .btn-menu img { display: block; }
+
+      .menu {
+        display: none; position: absolute; right: 0; top: calc(100% + var(--space-2)); z-index: 3;
+        min-width: calc(var(--space-9) * 4); padding: var(--space-2);
+        background: var(--color-white-100); border-radius: var(--radius-4); box-shadow: var(--shadow-popup);
+      }
+      .menu.open { display: grid; }
+      .menu button {
+        text-align: left; border: 0; background: transparent; color: var(--color-text-grey-100);
+        padding: var(--space-3) var(--space-4); border-radius: var(--radius-2);
+        font-size: var(--font-size-p3); line-height: var(--line-height-p3); font-weight: var(--font-weight-medium);
+      }
+      .menu button:hover { background: var(--color-text-grey-8); }
+
+      /* ---------- Hero (spacing measured from the reference screenshot) ---------- */
+      .hero {
+        display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+        column-gap: var(--space-responsive-8);
+        padding: calc(var(--space-8) * 2) var(--space-8) calc(var(--space-responsive-9) + var(--space-responsive-8)) var(--space-9);
+      }
+      .hero h1 {
+        margin: 0 0 var(--space-x24);
+        font-size: var(--font-size-h1); line-height: var(--line-height-h1);
+        font-weight: var(--font-weight-bold); letter-spacing: var(--letter-spacing-h1);
+      }
+      .hero h1 span { color: var(--color-primary-100); }
+      .hero p {
+        margin: 0 0 var(--space-4);
+        font-size: var(--font-size-p2); line-height: calc(var(--line-height-p2) + var(--space-x6));
+        font-weight: var(--font-weight-medium);
+      }
+      .hero p:last-child { margin-bottom: 0; }
+
+      .video-wrap { position: relative; top: var(--space-x20); } /* sits slightly below the text centre in the reference */
+      .video-wrap::before {
+        content: ""; position: absolute; left: 50%; top: 50%;
+        width: 98%; height: 106%;
+        background: var(--color-dashboard-community-yellow);
+        border-radius: calc(var(--radius-4) * 2);
+        transform: translate(-52.5%, -47.6%) rotate(-10deg);
+      }
+      .video {
+        position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+        /* grey tint over an opaque white base so the yellow card doesn't show through */
+        background: linear-gradient(var(--color-text-grey-24), var(--color-text-grey-24)), var(--color-white-100);
+        border-radius: var(--radius-4);
+      }
+      .play {
+        position: absolute; inset: 0; margin: auto;
+        width: calc(var(--space-9) + var(--space-7)); height: var(--space-9);
+        display: grid; place-items: center; border: 0;
+        background: var(--color-primary-100); color: var(--color-white-100);
+        transition: opacity .15s;
+      }
+      .play:hover { opacity: .88; }
+      .play svg { width: var(--space-6); height: var(--space-6); fill: currentColor; }
+      .mute {
+        position: absolute; top: var(--space-18); right: var(--space-18);
+        width: calc(var(--space-8) + var(--space-x6)); height: calc(var(--space-8) + var(--space-x6));
+        display: grid; place-items: center; border: 0; border-radius: 50%;
+        background: var(--color-text-grey-100); color: var(--color-white-100);
+      }
+      .mute svg { width: var(--space-responsive-4); height: var(--space-responsive-4); fill: currentColor; }
+
+      /* Grey band = start of the next section in the reference */
+      .band { background: var(--color-bg-grey); min-height: var(--space-responsive-9); }
+
+      /* ---------- Footer (Figma: Common Assets > Footer > Desktop Footer, Full) ---------- */
+      .site-footer { padding-block: var(--space-responsive-8) var(--space-8); }
+      .footer-inner { display: flex; flex-direction: column; align-items: center; gap: var(--space-8); width: min(100% - 2 * var(--space-4), 1170px); margin-inline: auto; }
+      .footer-top { display: flex; flex-direction: column; align-items: center; gap: var(--space-responsive-4); width: 100%; }
+      .footer-logo { display: grid; place-items: center; width: calc(var(--space-9) + var(--space-7) - var(--space-fixed-1)); height: calc(var(--space-9) + var(--space-7) - var(--space-fixed-1)); }
+      .footer-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2) var(--space-8); }
+      .footer-nav button {
+        border: 0; background: transparent; padding: 0; color: var(--color-text-grey-100);
+        font-size: var(--font-size-p1); line-height: var(--line-height-p1); font-weight: var(--font-weight-bold);
+      }
+      .footer-nav button:hover { color: var(--color-primary-100); }
+      .footer-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-responsive-4); width: 100%; }
+      .footer-links { display: flex; align-items: flex-end; gap: var(--space-responsive-4); color: var(--color-text-grey-80); }
+      .footer-links button, .footer-links span {
+        border: 0; background: transparent; padding: 0; color: inherit;
+        font-size: var(--font-size-p2); line-height: var(--line-height-p2); font-weight: var(--font-weight-medium);
+      }
+      .footer-links button:hover { color: var(--color-primary-100); }
+      .social { position: relative; display: block; }
+      .social img { display: block; }
+      .social-hits { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, 1fr); }
+      .social-hits button { border: 0; background: transparent; padding: 0; }
+      .divider { width: 100%; border: 0; border-top: 1px solid var(--color-text-grey-16); margin: 0; }
+      .legal { display: flex; align-items: center; justify-content: space-between; gap: var(--space-responsive-4); width: 100%; }
+      .legal-left { display: flex; gap: var(--space-4); align-items: flex-start; max-width: calc(var(--space-9) * 10 + var(--space-7) - var(--space-fixed-1) * 5); }
+      .legal-left img { opacity: .4; flex-shrink: 0; }
+      .legal-text, .legal-right {
+        display: flex; flex-direction: column; gap: var(--space-4);
+        font-size: var(--font-size-h6); line-height: var(--line-height-h5);
+        font-weight: var(--font-weight-medium); color: var(--color-text-grey-64);
+      }
+      .legal-text p, .legal-right p { margin: 0; }
+      .legal-right { align-items: flex-end; text-align: right; }
+      .legal-right .policies { white-space: nowrap; }
+      .legal-right button {
+        border: 0; background: transparent; padding: 0; color: inherit; font: inherit;
+        text-decoration: underline; text-decoration-thickness: from-font;
+      }
+      .legal-right button:hover { color: var(--color-primary-100); }
+      .sep { padding-inline: var(--space-2); }
+
+      /* ---------- Click feedback (destinations still to be decided) ---------- */
+      .toast {
+        position: fixed; left: 50%; bottom: var(--space-6); z-index: 4;
+        transform: translate(-50%, var(--space-9)); opacity: 0;
+        background: var(--color-text-grey-100); color: var(--color-white-100);
+        padding: var(--space-3) var(--space-4); border-radius: var(--radius-4); box-shadow: var(--shadow-popup);
+        font-size: var(--font-size-p4); line-height: var(--line-height-p4); font-weight: var(--font-weight-medium);
+        transition: transform .2s, opacity .2s; pointer-events: none;
+      }
+      .toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+      /* ---------- Mobile (Figma: M / Top Nav, Mobile Footer) ---------- */
+      @media (max-width: 767px) {
+        .nav-actions { gap: var(--space-fixed-1); }
+        .btn { padding: var(--space-2); font-size: var(--font-size-p4); line-height: var(--line-height-p4); }
+        .btn-menu { padding: 0 var(--space-2); }
+        .logo-mark { width: calc(var(--space-8) + var(--space-fixed-1) / 2); height: var(--space-7); }
+        /* Mobile order: title, video, then body text, all centred. */
+        .hero { grid-template-columns: 1fr; row-gap: 0; text-align: center; padding: var(--space-8) 0 var(--space-responsive-9); }
+        .hero > section { display: contents; }
+        .hero h1 { order: 1; margin-bottom: var(--space-6); }
+        .video-wrap { order: 2; margin-bottom: var(--space-8); }
+        .hero p { order: 3; }
+        .video-wrap { top: 0; }
+        .video-wrap::before { width: 94%; height: 104%; transform: translate(-51%, -49%) rotate(-6deg); }
+        .footer-nav { gap: var(--space-2) var(--space-responsive-4); }
+        .footer-row, .legal { flex-direction: column; align-items: center; text-align: center; }
+        .legal-left { flex-direction: column; align-items: center; }
+        .legal-right { align-items: center; text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="banner" data-action="banner">
+      Hear Rang De’s story directly from the Rang De founders Ram and Smita!
+      <img src="public/icons/chevron-right-small.svg" width="4" height="6" alt="" aria-hidden="true" />
+    </button>
+    <header class="site-header" id="site-header">
+      <div class="container nav">
+        <a class="logo" href="#" data-action="logo" aria-label="Rang De home">
+          <span class="logo-mark"><img src="public/brand/rangde-logo.svg" width="57" height="45" alt="Rang De" /></span>
+          <small>Rang De P2P Financial Services Ltd.</small>
+        </a>
+        <div class="nav-actions">
+          <button class="btn btn-primary" data-action="lend">Lend</button>
+          <button class="btn btn-secondary" data-action="login">Sign up / Login</button>
+          <button class="btn btn-menu" id="menu-btn" aria-label="Menu" aria-expanded="false">
+            <img src="public/icons/menu.svg" width="16" height="12" alt="" aria-hidden="true" />
+          </button>
+        </div>
+        <nav class="menu" id="menu">
+          <button data-action="menu-about">About us</button>
+          <button data-action="menu-how">How it works</button>
+          <button data-action="menu-borrow">Borrow</button>
+          <button data-action="menu-contact">Contact</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container hero">
+      <section>
+        <h1>We are <span>Rang De</span></h1>
+        <p>Rang De is India’s pioneering and only peer to peer lending platform focused on providing timely and affordable credit to unbanked communities.</p>
+        <p>We pioneered social investing, enabling individuals to lend to unbanked farmers, artisans and entrepreneurs and help kickstart, sustain and grow their livelihoods.</p>
+      </section>
+      <div class="video-wrap">
+        <div class="video">
+          <button class="mute" id="mute-btn" aria-label="Mute" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path id="mute-icon" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z"/></svg>
+          </button>
+          <button class="play" id="play-btn" aria-label="Play video">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <div class="band"></div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <span class="footer-logo"><img src="public/brand/rangde-tree.svg" width="74" height="84" alt="" aria-hidden="true" /></span>
+          <nav class="footer-nav">
+            <button data-action="f-faqs">FAQs</button>
+            <button data-action="f-about">About</button>
+            <button data-action="f-investors">Social Investors</button>
+            <button data-action="f-track">Track Record</button>
+            <button data-action="f-blog">Blog</button>
+            <button data-action="f-contact">Contact</button>
+            <button data-action="f-partner">Partner with Us</button>
+          </nav>
+        </div>
+        <div class="footer-row">
+          <div class="footer-links">
+            <button data-action="f-impact">Impact Partners</button>
+            <span aria-hidden="true">·</span>
+            <button data-action="f-press">In the Press</button>
+          </div>
+          <div class="social">
+            <img src="public/brand/social-icons.svg" width="226" height="20" alt="" aria-hidden="true" />
+            <div class="social-hits">
+              <button data-action="s-facebook" aria-label="Facebook"></button>
+              <button data-action="s-linkedin" aria-label="LinkedIn"></button>
+              <button data-action="s-youtube" aria-label="YouTube"></button>
+              <button data-action="s-x" aria-label="X"></button>
+              <button data-action="s-instagram" aria-label="Instagram"></button>
+            </div>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="legal">
+          <div class="legal-left">
+            <img src="public/brand/rbi-seal.png" width="48" height="48" alt="RBI seal" />
+            <div class="legal-text">
+              <p>Rang De is an RBI registered NBFC P2P platform vide Certificate of Registration (COR) No. : N - 02-00319</p>
+              <p>Reserve Bank of India does not accept any responsibility for the correctness of any of the statements or representations made or opinions expressed by Rang De P2P Financial Services Pvt. Ltd, and does not provide any assurance for repayment of the loans lent on it.</p>
+            </div>
+          </div>
+          <div class="legal-right">
+            <p>© 2024, Rang De P2P Financial Services Pvt. Ltd.</p>
+            <p class="policies">
+              <button data-action="l-terms">Terms</button><span class="sep">·</span><button data-action="l-loan">Loan Terms &amp; Conditions</button><span class="sep">·</span><button data-action="l-pricing">Pricing Structure Policy</button><br />
+              <button data-action="l-privacy">Privacy Policy</button><span class="sep">·</span><button data-action="l-data">Data Usage and Protection</button><span class="sep">·</span><button data-action="l-grievance">Grievance Redressal Policy</button><br />
+              <button data-action="l-fair">Fair Practices Code</button><span class="sep">·</span><button data-action="l-annual">Annual Returns</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      const toast = document.getElementById("toast");
+      const menu = document.getElementById("menu");
+      const menuBtn = document.getElementById("menu-btn");
+      let timer;
+      function say(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(timer);
+        timer = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+
+      // Every clickable element: swap the message for a real destination once decided.
+      document.querySelectorAll("[data-action]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          const name = el.getAttribute("aria-label") || el.textContent.trim() || el.dataset.action;
+          say(name + " clicked (destination to be decided)");
+          menu.classList.remove("open");
+          menuBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      // Shadow fades in once the page is scrolled and disappears back at the very top.
+      const siteHeader = document.getElementById("site-header");
+      const onScroll = () => siteHeader.classList.toggle("scrolled", window.scrollY > 0);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      menuBtn.addEventListener("click", () => {
+        const open = menu.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", String(open));
+      });
+
+      const playBtn = document.getElementById("play-btn");
+      const playIcon = document.getElementById("play-icon");
+      let playing = false;
+      playBtn.addEventListener("click", () => {
+        playing = !playing;
+        playIcon.setAttribute("d", playing ? "M6 5h4v14H6zm8 0h4v14h-4z" : "M8 5v14l11-7z");
+        playBtn.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+        say(playing ? "Playing (placeholder video)" : "Paused");
+      });
+
+      const muteBtn = document.getElementById("mute-btn");
+      const muteIcon = document.getElementById("mute-icon");
+      muteBtn.addEventListener("click", () => {
+        const muted = muteBtn.getAttribute("aria-pressed") !== "true";
+        muteBtn.setAttribute("aria-pressed", String(muted));
+        muteIcon.setAttribute("d", muted
+          ? "M3 9v6h4l5 4V5L7 9H3zm13.6 3 2.7-2.7-1.1-1.1-2.7 2.7-2.7-2.7-1.1 1.1 2.7 2.7-2.7 2.7 1.1 1.1 2.7-2.7 2.7 2.7 1.1-1.1z"
+          : "M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z");
+        say(muted ? "Muted" : "Sound on");
+      });
+    </script>
+  </body>
+</html>

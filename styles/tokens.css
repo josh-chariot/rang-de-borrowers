@@ -1,0 +1,214 @@
+/*
+ * Rang De design tokens (light theme only).
+ * Source: Figma "Rang De Design System v2" (Typography, Spacing, Color pages).
+ * Do not hardcode values elsewhere; reference these variables.
+ */
+
+:root {
+  /* ---------- Colour: neutrals and surfaces ---------- */
+  --color-bg-grey: #f1f2f5;
+  --color-misc-white-to-dark: #ffffff;
+  --color-neutral-6: #d9d9e0;
+  --color-neutral-alpha-2: #00005506;
+  --color-neutral-alpha-3: #0000330f;
+  --color-neutral-alpha-7: #00062e32;
+  --color-black-alpha-3: #00000026;
+  --color-black-alpha-8: #00000014;
+  --color-black-alpha-16: #00000029;
+  --color-progress-lime: #b9d143; /* bottom band progress fill; hex only in Figma */
+  --color-priority-purple: #8260af; /* Priority popup title; hex only in Figma */
+
+  /* ---------- Colour: white ---------- */
+  --color-white-100: #ffffff;
+  --color-white-80: #ffffffcc;
+  --color-white-64: #ffffffa3;
+  --color-white-48: #ffffff7a;
+  --color-white-40: #ffffff66;
+  --color-white-32: #ffffff52;
+  --color-white-24: #ffffff3d;
+  --color-white-16: #ffffff29;
+  --color-white-8: #ffffff14;
+
+  /* ---------- Colour: primary blue ---------- */
+  --color-primary-100: #0daade;
+  --color-primary-80: #0daadecc;
+  --color-primary-64: #0daadea3;
+  --color-primary-48: #0daade7a;
+  --color-primary-40: #0daade66;
+  --color-primary-32: #0daade52;
+  --color-primary-24: #0daade3d;
+  --color-primary-16: #0daade29;
+  --color-primary-8: #0daade14;
+
+  /* ---------- Colour: green ---------- */
+  --color-green-100: #8ca21e;
+  --color-green-80: #8ca21ecc;
+  --color-green-64: #8ca21ea3;
+  --color-green-48: #8ca21e7a;
+  --color-green-40: #8ca21e66;
+  --color-green-32: #8ca21e52;
+  --color-green-24: #8ca21e3d;
+  --color-green-16: #8ca21e29;
+  --color-green-8: #8ca21e14;
+
+  /* ---------- Colour: text grey (Figma "Black" swatch row) ---------- */
+  --color-text-grey-100: #292d36;
+  --color-text-grey-80: #292d36cc;
+  --color-text-grey-64: #292d36a3;
+  --color-text-grey-48: #292d367a;
+  --color-text-grey-40: #292d3666;
+  --color-text-grey-32: #292d3652;
+  --color-text-grey-24: #292d363d;
+  --color-text-grey-16: #292d3629;
+  --color-text-grey-8: #292d3614;
+  --color-text-grey-4: #292d360a;
+
+  /* ---------- Colour: red ---------- */
+  --color-red-100: #e32642;
+  --color-red-80: #e32642cc;
+  --color-red-64: #e32642a3;
+  --color-red-40: #e3264266;
+  --color-red-32: #e3264252;
+  --color-red-16: #e3264229;
+
+  /* ---------- Colour: dashboard (names assigned here; Figma has hex only) ---------- */
+  --color-dashboard-overview-investment-bg: #14181c;
+  --color-dashboard-repayment-bg: #003f13;
+  --color-dashboard-nudge-band-maroon: #6a0000e0; /* 88% */
+  --color-dashboard-nudge-band-amber: #ffb200e0; /* 88% */
+  --color-dashboard-repayment-breakup-1: #804545;
+  --color-dashboard-repayment-breakup-2: #cccdcf;
+  --color-dashboard-repayment-breakup-3: #e19747;
+  --color-dashboard-repayment-breakup-4: #acbc5d;
+  --color-dashboard-community-yellow: #ffca3e;
+  --color-dashboard-community-navy: #0a2d72;
+
+  /* ---------- Typography: family and weights ---------- */
+  --font-family-base: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900; /* not defined for H5 / H6 in Figma */
+
+  /* ---------- Typography: sizes, line heights, letter spacing (desktop) ---------- */
+  --font-size-h1: 56px;
+  --line-height-h1: 64px;
+  --letter-spacing-h1: 0;
+  --font-size-h2: 48px;
+  --line-height-h2: 56px;
+  --letter-spacing-h2: 0;
+  --font-size-h3: 40px;
+  --line-height-h3: 48px;
+  --letter-spacing-h3: 0;
+  --font-size-h4: 32px;
+  --line-height-h4: 40px;
+  --letter-spacing-h4: 0;
+  --font-size-h5: 11px;
+  --line-height-h5: 16px;
+  --letter-spacing-h5: 0.08em; /* Figma value 8 renders as 8% (0.72px at 9px, 0.88px at 11px) */
+  --font-size-h6: 10px;
+  --line-height-h6: 12px;
+  --letter-spacing-h6: 0.05em; /* Figma value 5 = 5% */
+  --font-size-p1: 24px;
+  --line-height-p1: 32px;
+  --letter-spacing-p1: 0;
+  --font-size-p2: 18px;
+  --line-height-p2: 24px;
+  --letter-spacing-p2: 0;
+  --font-size-p3: 16px;
+  --line-height-p3: 24px;
+  --letter-spacing-p3: 0;
+  --font-size-p4: 14px;
+  --line-height-p4: 20px;
+  --letter-spacing-p4: 0;
+
+  /* ---------- Spacing: fixed scale (step number = Figma variable name) ---------- */
+  --space-0: 2px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-18: 18px; /* popup note box padding; not a Figma spacing variable */
+
+  /* Off-scale pixel values used by Figma components (not Figma variables). "x" = off-scale px. */
+  --space-fixed-1: 4px; /* Figma "1 Fixed" */
+  --space-x6: 6px; /* small button vertical padding, progress bar height */
+  --space-x14: 14px; /* mobile input vertical padding */
+  --space-x20: 20px; /* mobile filled-input top padding, icon box */
+  --space-x24: 24px; /* fixed 24px (large button and input padding); likely the missing Spacing/5 */
+  --space-x36: 36px; /* small button min height */
+
+  /* ---------- Spacing: responsive scale ---------- */
+  --space-responsive-0: 2px; /* mobile 0px */
+  --space-responsive-1: 4px; /* mobile 2px */
+  --space-responsive-2: 8px;
+  --space-responsive-3: 16px;
+  --space-responsive-4: 24px;
+  --space-responsive-5: 48px;
+  --space-responsive-6: 64px;
+  --space-responsive-7: 72px;
+  --space-responsive-8: 80px;
+  --space-responsive-9: 120px;
+
+  /* ---------- Radius ---------- */
+  --radius-2: 4px;
+  --radius-4: 8px;
+
+  /* ---------- Shadow ---------- */
+  --shadow-6:
+    0 0 0 1px var(--color-neutral-alpha-3),
+    0 12px 60px 0 var(--color-black-alpha-3),
+    0 16px 64px 0 var(--color-neutral-alpha-2),
+    0 16px 36px -20px var(--color-neutral-alpha-7);
+  --shadow-tooltip: 0 4px 8px 0 var(--color-black-alpha-8);
+  --shadow-popup: 0 4px 16px 0 var(--color-black-alpha-8);
+  --shadow-band: 0 -4px 12px 0 var(--color-black-alpha-16);
+
+  /* ---------- Layout (from Figma Common Assets > Header / Footer) ---------- */
+  --container-page: 1240px; /* header and page content */
+  --container-footer: 1170px;
+  --container-list: 1200px; /* borrower list rows */
+  --container-hero: 920px; /* hero headline */
+  --container-faq: 980px; /* borrower FAQ section */
+
+  /* ---------- Borrower gallery (past borrowers directory) ---------- */
+  /* Corner radius as a share of the tile: smallest tile (zoomed out) to largest (zoomed in). */
+  --gallery-radius-min: 4%;
+  --gallery-radius-max: 40%;
+  /* Gap between tiles as a share of the tile size. */
+  --gallery-gap-ratio: 0.08;
+}
+
+/* Mobile typography overrides (breakpoint is an assumption; Figma gives no value). */
+@media (max-width: 767px) {
+  :root {
+    /* Responsive spacing mobile values (only steps 0, 1, 3, 4 are known from Figma). */
+    --space-responsive-0: 0px;
+    --space-responsive-1: 2px;
+    --space-responsive-3: 8px;
+    --space-responsive-4: 16px;
+
+    --font-size-h1: 34px;
+    --line-height-h1: 36px;
+    --font-size-h2: 34px;
+    --line-height-h2: 36px;
+    --font-size-h3: 32px;
+    --line-height-h3: 36px;
+    --font-size-h4: 24px;
+    --line-height-h4: 28px;
+    --font-size-h5: 9px;
+    --line-height-h5: 12px;
+    --font-size-h6: 8px;
+    --line-height-h6: 12px;
+    --font-size-p1: 18px;
+    --line-height-p1: 24px;
+    --font-size-p2: 16px;
+    --line-height-p2: 22px;
+    --font-size-p3: 14px;
+    --line-height-p3: 20px;
+    --font-size-p4: 12px;
+    --line-height-p4: 16px;
+  }
+}
